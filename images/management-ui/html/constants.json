@@ -1,0 +1,22 @@
+{                                                                               
+    "baseURL": "http://managementapi-gravitee.minishift.local/management/",                               
+    "portalTitle": "Gravitee.io Portal",                                          
+    "managementTitle": "Gravitee.io Management",                                  
+    "devMode": false,                                                             
+    "userCreationEnabled": true,                                                  
+    "documentation": {                                                            
+      "url": "https://docs.gravitee.io"                                           
+    },                                                                            
+    "portal": {                                                                   
+      "entrypoint": "http://gateway-gravitee.minishift.local",                                    
+      "apikeyHeader": "X-Gravitee-Api-Key"                                        
+    },                                                                            
+    "theme": {                                                                    
+      "name": "default",                                                          
+      "logo": "themes/assets/GRAVITEE_LOGO1-01.png",                              
+      "loader": "assets/gravitee_logo_anim.gif"                                   
+    },                                                                            
+    "support": {                                                                  
+      "enabled": false                                                            
+    }                                                                             
+  }
