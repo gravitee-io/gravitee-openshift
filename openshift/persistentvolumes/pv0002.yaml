@@ -9,4 +9,7 @@ spec:
   - ReadWriteOnce
  storageClassName: slow
  hostPath:
-  path: /var/lib/minishift/openshift.local.volumes/pv0002
+  path: /opt/openshift_pv/pv0002
+# nfs:
+#   server: 10.5.18.122
+#   path: /var/nfs-data/pv0002

@@ -33,11 +33,13 @@ objects:
           deploymentconfig: elasticsearch
       spec:
         containers:
-        - image: elasticsearch:2
+        - image: elasticsearch:5.6.16
           imagePullPolicy: IfNotPresent
           name: elasticsearch
           ports:
           - containerPort: 9300
+            protocol: TCP
+          - containerPort: 9200
             protocol: TCP
           resources: {}
           terminationMessagePath: /dev/termination-log
@@ -88,6 +90,14 @@ objects:
       spec:
         containers:
         - env:
+          - name: GRAVITEE_MANAGEMENT_MONGODB_URI
+            value: "mongodb://mongodb:27017/gravitee?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000"
+          - name: GRAVITEE_RATELIMIT_MONGODB_URI
+            value: "mongodb://mongodb:27017/gravitee?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000"
+          - name: GRAVITEE_REPORTERS_ELASTICSEARCH_ENDPOINTS_0
+            value: "http://elasticsearch:9200"
+          - name: GRAVITEE_PLUGINS_PATH_0
+            value: "$${gravitee.home}/plugins"
           - name: GRAVITEEIO_ELASTIC_HOST
             value: elasticsearch
           - name: GRAVITEEIO_MONGODB_HOST
@@ -149,6 +159,18 @@ objects:
       spec:
         containers:
         - env:
+          - name: GRAVITEE_MANAGEMENT_MONGODB_URI
+            value: "mongodb://mongodb:27017/gravitee?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000"
+          - name: GRAVITEE_RATELIMIT_MONGODB_URI
+            value: "mongodb://mongodb:27017/gravitee?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000"
+          - name: GRAVITEE_ANALYTICS_ELASTICSEARCH_ENDPOINTS_0
+            value: "http://elasticsearch:9200"
+          - name: GRAVITEE_USER_LOGIN_DEFAULTAPPLICATION
+            value: "false"
+          - name: GRAVITEE_PLUGINS_PATH_0
+            value: "$${gravitee.home}/plugins"
+#          - name: GRAVITEE_PLUGINS_PATH_1
+#            value: "$${gravitee.home}/plugins-ext"
           - name: GRAVITEEIO_ELASTIC_HOST
             value: elasticsearch
           - name: GRAVITEEIO_MONGODB_HOST
@@ -310,6 +332,10 @@ objects:
       port: 9300
       protocol: TCP
       targetPort: 9300
+    - name: 9200-tcp
+      port: 9200
+      protocol: TCP
+      targetPort: 9200
     selector:
       deploymentconfig: elasticsearch
     sessionAffinity: None
@@ -470,12 +496,12 @@ parameters:
     value: gravitee
     required: true 
   - name: GRAVITEE_VERSION 
-    description: Verion of gravitee to deploy
-    value: 1.10.4
+    description: Version of gravitee to deploy
+    value: 1.26.0
     required: true 
   - name: OPENSHIFT_SUFFIXE
     description: Base of web access for openshift 
-    value: minishift.local
+    value: 10.5.18.122.nip.io
     required: true
   - name: STORAGE_ELASTIC
     description: Gi storage for elasticsearch 

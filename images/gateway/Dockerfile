@@ -26,6 +26,8 @@ RUN wget https://download.gravitee.io/graviteeio-apim/distributions/graviteeio-f
 ENV GRAVITEEIO_HOME /opt/graviteeio-gateway
 WORKDIR ${GRAVITEEIO_HOME}
 
+COPY config/gravitee.yml ${GRAVITEEIO_HOME}/config/
+
 ENV GRAVITEEIO_MONGODB_HOST localhost
 ENV GRAVITEEIO_MONGODB_PORT 27017
 ENV GRAVITEEIO_ELASTIC_HOST localhost
