@@ -461,34 +461,24 @@ objects:
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
-    annotations:
-      pv.kubernetes.io/bind-completed: "yes"
-      pv.kubernetes.io/bound-by-controller: "yes"
-    creationTimestamp: null
     name: mongodata
   spec:
     accessModes:
     - ReadWriteOnce
     resources:
       requests:
-        storage: 100Mi
-    volumeName: pv0001
+        storage: 1Gi
   status: {}
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
-    annotations:
-      pv.kubernetes.io/bind-completed: "yes"
-      pv.kubernetes.io/bound-by-controller: "yes"
-    creationTimestamp: null
     name: elasticdata
   spec:
     accessModes:
     - ReadWriteOnce
     resources:
       requests:
-        storage: 100Mi
-    volumeName: pv0002
+        storage: 1Gi
   status: {}
 parameters:
   - name: NAMESPACE 
@@ -501,7 +491,7 @@ parameters:
     required: true 
   - name: OPENSHIFT_SUFFIXE
     description: Base of web access for openshift 
-    value: 10.5.18.122.nip.io
+    value: apps.c0preprod.dedalus.lan 
     required: true
   - name: STORAGE_ELASTIC
     description: Gi storage for elasticsearch 
