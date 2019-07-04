@@ -1,7 +1,6 @@
 # gravitee-OpenShift
-https://github.com/cprato79/gravitee-openshift
 
-Fork from official: https://github.com/gravitee-io/gravitee-openshift
+Contributor: C.Prato
 
 ## Description
 
@@ -16,24 +15,24 @@ and the following dependecies:
   - 2.x
   - 5.x
 
+###  RampUp
+remember to update the url `10.5.18.122.nip.io` to reach from outside the cluster on the following files:
+  * images/management-ui/html/constants.json
+  * images/management-ui/Dockerfile
+
+
 ### elastisearch:
   * 9200 => REST request
   * 9300 => HTTP request
 
 ### docker images:
 
-commands shortcut:
-
-```
-oc rsync --exclude=* --include="gravitee.yml" gateway-1-86gfd:/opt/graviteeio-gateway/config/ ./config/
-```
-
 ## gateway
 Import the images on openshift registry:
   - `docker.io/graviteeio/gateway:latest`
   - `oc import-image graviteeio/gateway:latest --confirm`
 
-before proceed to create all the openshift objects it sets the properties by ENV section of Deployment Config on Opneshift template: ""
+before proceed to create all the openshift objects it sets the properties by ENV section of Deployment Config on Openshift template: ""
 
 ```
 - name: GRAVITEE_MANAGEMENT_MONGODB_URI
