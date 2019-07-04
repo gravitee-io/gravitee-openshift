@@ -27,19 +27,20 @@ export GRAVITEEIO_VERSION=1.26.0
 
 
 add_secret_opt () {
-  export GIT_SECRET_OPT="--source-secret=git-cprato-secret"
+  export GIT_SECRET_OPT="--source-secret=git-secret"
 
   # create secret to gravitee project
   oc create -f secret/create_secret.yml -n gravitee
   # link secret to build service
-  for i in default deployer builder gravitee; do oc secret link $i git-cprato-secret --for=pull -n gravitee;done
+  for i in default deployer builder gravitee; do oc secret link $i git-secret --for=pull -n gravitee;done
 }
 
 # 1. definie build
 # 2. start building
 # 3. tag this version
 
-add_secret_opt
+# disable for secret creation
+#add_secret_opt
 
 # gateway
 oc new-build ../ --name=gateway --context-dir=images/gateway/ --strategy=docker $GIT_SECRET_OPT --build-arg=GRAVITEEIO_VERSION=$GRAVITEEIO_VERSION
@@ -65,6 +66,3 @@ oc tag management-ui:latest management-ui:$GRAVITEEIO_VERSION
 
 # import OpenShift Template
 oc process -f ./template-graviteeapim.yaml | oc create -f -
-
-
-
