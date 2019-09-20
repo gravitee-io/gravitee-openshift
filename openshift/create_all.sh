@@ -43,24 +43,21 @@ add_secret_opt () {
 #add_secret_opt
 
 # gateway
-oc new-build ../ --name=gateway --context-dir=images/gateway/ --strategy=docker $GIT_SECRET_OPT --build-arg=GRAVITEEIO_VERSION=$GRAVITEEIO_VERSION
-#oc start-build gateway --wait --from-dir ../images/gateway/ --build-arg=GRAVITEEIO_VERSION=$GRAVITEEIO_VERSION
-oc start-build gateway --wait --build-arg=GRAVITEEIO_VERSION=$GRAVITEEIO_VERSION
+oc new-build --name=gateway --binary --strategy=docker $GIT_SECRET_OPT --build-arg=GRAVITEEIO_VERSION=$GRAVITEEIO_VERSION
+oc start-build gateway --wait --from-dir=gateway
 sleep 5
 oc tag gateway:latest gateway:$GRAVITEEIO_VERSION
 
 
 # management-api
-oc new-build ../ --name=management-api --context-dir=images/management-api/ --strategy=docker $GIT_SECRET_OPT --build-arg=GRAVITEEIO_VERSION=$GRAVITEEIO_VERSION
-#oc start-build management-api --from-dir ../images/management-api/ --build-arg=GRAVITEEIO_VERSION=$GRAVITEEIO_VERSION
-oc start-build management-api --wait --build-arg=GRAVITEEIO_VERSION=$GRAVITEEIO_VERSION
+oc new-build --name=management-api --binary --strategy=docker $GIT_SECRET_OPT --build-arg=GRAVITEEIO_VERSION=$GRAVITEEIO_VERSION
+oc start-build management-api --wait --from-dir=management-api
 sleep 5
 oc tag management-api:latest management-api:$GRAVITEEIO_VERSION
 
 # management-ui
-oc new-build ../ --name=management-ui --context-dir=images/management-ui/ --strategy=docker $GIT_SECRET_OPT --build-arg=GRAVITEEIO_VERSION=$GRAVITEEIO_VERSION
-#oc start-build management-ui --from-dir ../images/management-ui/ --build-arg=GRAVITEEIO_VERSION=$GRAVITEEIO_VERSION
-oc start-build management-ui --wait --build-arg=GRAVITEEIO_VERSION=$GRAVITEEIO_VERSION
+oc new-build --name=management-ui --binary --strategy=docker $GIT_SECRET_OPT --build-arg=GRAVITEEIO_VERSION=$GRAVITEEIO_VERSION
+oc start-build management-ui --wait --from-dir=management-ui
 sleep 5
 oc tag management-ui:latest management-ui:$GRAVITEEIO_VERSION
 
