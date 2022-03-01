@@ -40,4 +40,4 @@ ENV GIO_MAX_MEM 2g
 
 EXPOSE 8083
 VOLUME ["/opt/graviteeio-management-api/logs"]
-CMD ["/bin/sh","/bin/gravitee"]
+CMD ["/bin/sh","./bin/gravitee"]

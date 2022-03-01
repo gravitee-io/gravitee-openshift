@@ -35,4 +35,4 @@ ENV GRAVITEEIO_ELASTIC_PORT 9300
 
 EXPOSE 8082
 VOLUME ["/opt/graviteeio-gateway/logs"]
-CMD ["/bin/sh","/bin/gravitee"]
+CMD ["/bin/sh","./bin/gravitee"]
