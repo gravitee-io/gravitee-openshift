@@ -11,33 +11,39 @@
 #    limitations under the License.
 #-------------------------------------------------------------------------------
 FROM graviteeio/java:8
-MAINTAINER Gravitee Team <http://gravitee.io>
 
 ARG GRAVITEEIO_VERSION=0
 
-# Update to get support for Zip/Unzip, nc and wget
-RUN apk add --update zip unzip netcat-openbsd wget
+LABEL name="gateway:${GRAVITEEIO_VERSION}" \
+      authors="Gravitee Team <http://gravitee.io>"
 
-RUN wget https://download.gravitee.io/graviteeio-apim/distributions/graviteeio-full-${GRAVITEEIO_VERSION}.zip --no-check-certificate -P /tmp/ \
-    && unzip /tmp/graviteeio-full-${GRAVITEEIO_VERSION}.zip -d /tmp/ \
-    && mv /tmp/graviteeio-full-${GRAVITEEIO_VERSION}/graviteeio-management-api* /opt/graviteeio-management-api \
-    && rm -rf /tmp/*
+ENV GRAVITEEIO_MONGODB_HOST="mongodb" \
+    GRAVITEEIO_MONGODB_PORT="27017" \
+    GRAVITEEIO_ELASTIC_HOST="elasticsearch" \
+    GRAVITEEIO_ELASTIC_PORT="9200" \
+    GRAVITEEIO_HOME="/opt/graviteeio-management-api" \
+    GRAVITEEIO_PORTAL_URL="http://localhost:80" \
+    GIO_MIN_MEM="1g" \
+    GIO_MAX_MEM="2g"
 
-ENV GRAVITEEIO_HOME /opt/graviteeio-management-api
+RUN set -eux; \
+    echo "===> Installing OS Utility"; \
+    apk add --update zip unzip netcat-openbsd wget
+
+RUN set -eux; \
+    echo "===> Installing the Gravitee Management API ${GRAVITEEIO_VERSION}"; \
+    wget https://download.gravitee.io/graviteeio-apim/distributions/graviteeio-full-${GRAVITEEIO_VERSION}.zip --no-check-certificate -P /tmp/; \
+    unzip /tmp/graviteeio-full-${GRAVITEEIO_VERSION}.zip -d /tmp/; \
+    mv /tmp/graviteeio-full-${GRAVITEEIO_VERSION}/graviteeio-management-api* ${GRAVITEEIO_HOME}; \
+    rm -rf /tmp/*; \
+    chown -R 1001:0 ${GRAVITEEIO_HOME}; \
+    chmod -R ug+rwX ${GRAVITEEIO_HOME}
+
 WORKDIR ${GRAVITEEIO_HOME}
 
 COPY config/gravitee.yml ${GRAVITEEIO_HOME}/config/
 COPY bin/gravitee ${GRAVITEEIO_HOME}/bin/
 
-ENV GRAVITEEIO_MONGODB_HOST mongodb
-ENV GRAVITEEIO_MONGODB_PORT 27017
-ENV GRAVITEEIO_ELASTIC_HOST elasticsearch
-ENV GRAVITEEIO_ELASTIC_PORT 9200
-
-ENV GRAVITEEIO_PORTAL_URL http://localhost:80
-ENV GIO_MIN_MEM 1g
-ENV GIO_MAX_MEM 2g
-
 EXPOSE 8083
-VOLUME ["/opt/graviteeio-management-api/logs"]
-CMD ["/bin/sh","./bin/gravitee"]
+VOLUME ["${GRAVITEEIO_HOME}/logs"]
+CMD ["./bin/gravitee"]

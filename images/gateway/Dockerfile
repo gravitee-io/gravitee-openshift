@@ -17,11 +17,11 @@ ARG GRAVITEEIO_VERSION=0
 LABEL name="gateway:${GRAVITEEIO_VERSION}" \
       authors="Gravitee Team <http://gravitee.io>"
 
-ENV GRAVITEEIO_MONGODB_HOST=localhost \
-    GRAVITEEIO_MONGODB_PORT=27017 \
-    GRAVITEEIO_ELASTIC_HOST=localhost \
-    GRAVITEEIO_ELASTIC_PORT=9300 \
-    GRAVITEEIO_HOME=/opt/graviteeio-gateway
+ENV GRAVITEEIO_MONGODB_HOST="localhost" \
+    GRAVITEEIO_MONGODB_PORT="27017" \
+    GRAVITEEIO_ELASTIC_HOST="localhost" \
+    GRAVITEEIO_ELASTIC_PORT="9300" \
+    GRAVITEEIO_HOME="/opt/graviteeio-gateway"
 
 RUN set -eux; \
     echo "===> Installing OS Utility"; \
