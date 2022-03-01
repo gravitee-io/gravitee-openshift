@@ -45,7 +45,8 @@ COPY config/gravitee.yml ${GRAVITEEIO_HOME}/config/
 COPY bin/gravitee ${GRAVITEEIO_HOME}/bin/
 
 RUN set -eux; \
-    chmod ug+x ${GRAVITEEIO_HOME}/bin/
+    chmod ug+x ${GRAVITEEIO_HOME}/bin/gravitee; \
+    chown -R 1001:0 ${GRAVITEEIO_HOME}/bin/gravitee
 
 EXPOSE 8083
 VOLUME ["${GRAVITEEIO_HOME}/logs"]
