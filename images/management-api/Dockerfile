@@ -44,6 +44,9 @@ WORKDIR ${GRAVITEEIO_HOME}
 COPY config/gravitee.yml ${GRAVITEEIO_HOME}/config/
 COPY bin/gravitee ${GRAVITEEIO_HOME}/bin/
 
+RUN set -eux; \
+    chmod ug+x ${GRAVITEEIO_HOME}/bin/
+
 EXPOSE 8083
 VOLUME ["${GRAVITEEIO_HOME}/logs"]
 CMD ["./bin/gravitee"]
