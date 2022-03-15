@@ -11,26 +11,35 @@
 #    limitations under the License.
 #-------------------------------------------------------------------------------
 FROM graviteeio/java:8
-MAINTAINER Gravitee Team <http://gravitee.io>
 
 ARG GRAVITEEIO_VERSION=0
 
-# Update to get support for Zip/Unzip, nc and wget
-RUN apk add --update zip unzip netcat-openbsd wget
+LABEL name="gateway:${GRAVITEEIO_VERSION}" \
+      authors="Gravitee Team <http://gravitee.io>"
 
-RUN wget https://download.gravitee.io/graviteeio-apim/distributions/graviteeio-full-${GRAVITEEIO_VERSION}.zip --no-check-certificate -P /tmp/ \
-    && unzip /tmp/graviteeio-full-${GRAVITEEIO_VERSION}.zip -d /tmp/ \
-    && mv /tmp/graviteeio-full-${GRAVITEEIO_VERSION}/graviteeio-gateway* /opt/graviteeio-gateway \
-    && rm -rf /tmp/*
+ENV GRAVITEEIO_MONGODB_HOST="localhost" \
+    GRAVITEEIO_MONGODB_PORT="27017" \
+    GRAVITEEIO_ELASTIC_HOST="localhost" \
+    GRAVITEEIO_ELASTIC_PORT="9300" \
+    GRAVITEEIO_HOME="/opt/graviteeio-gateway"
 
-ENV GRAVITEEIO_HOME /opt/graviteeio-gateway
+RUN set -eux; \
+    echo "===> Installing OS Utility"; \
+    apk add --update zip unzip netcat-openbsd wget
+
+RUN set -eux; \
+    echo "===> Installing Gravitee ${GRAVITEEIO_VERSION}"; \
+    wget -v https://download.gravitee.io/graviteeio-apim/distributions/graviteeio-full-${GRAVITEEIO_VERSION}.zip --no-check-certificate -P /tmp/; \
+    unzip /tmp/graviteeio-full-${GRAVITEEIO_VERSION}.zip -d /tmp/; \
+    mv /tmp/graviteeio-full-${GRAVITEEIO_VERSION}/graviteeio-gateway* ${GRAVITEEIO_HOME}; \
+    rm -rf /tmp/*; \
+    chown -R 1001:0 ${GRAVITEEIO_HOME}; \
+    chmod -R ug+rwX ${GRAVITEEIO_HOME}
+
 WORKDIR ${GRAVITEEIO_HOME}
 
-ENV GRAVITEEIO_MONGODB_HOST localhost
-ENV GRAVITEEIO_MONGODB_PORT 27017
-ENV GRAVITEEIO_ELASTIC_HOST localhost
-ENV GRAVITEEIO_ELASTIC_PORT 9300
+COPY config/gravitee.yml ${GRAVITEEIO_HOME}/config/
 
 EXPOSE 8082
-VOLUME ["/opt/graviteeio-gateway/logs"]
+VOLUME ["${GRAVITEEIO_HOME}/logs"]
 CMD ["./bin/gravitee"]

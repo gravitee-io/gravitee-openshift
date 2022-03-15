@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #delete objects
 oc delete dc mongodb -n gravitee
 oc delete services mongodb -n gravitee

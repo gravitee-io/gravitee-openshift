@@ -1,5 +1,5 @@
 {                                                                               
-    "baseURL": "http://managementapi-gravitee.minishift.local/management/",                               
+    "baseURL": "http://managementapi-gravitee.10.5.18.122.nip.io/management/",                               
     "portalTitle": "Gravitee.io Portal",                                          
     "managementTitle": "Gravitee.io Management",                                  
     "devMode": false,                                                             
@@ -8,7 +8,7 @@
       "url": "https://docs.gravitee.io"                                           
     },                                                                            
     "portal": {                                                                   
-      "entrypoint": "http://gateway-gravitee.minishift.local",                                    
+      "entrypoint": "http://gateway-gravitee.10.5.18.122.nip.io",                                    
       "apikeyHeader": "X-Gravitee-Api-Key"                                        
     },                                                                            
     "theme": {                                                                    
